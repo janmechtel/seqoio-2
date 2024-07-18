@@ -48,7 +48,6 @@ const texts = {
   Matthias from Seqoio`,
 };
 
-
 async function sendSignupEmail(email, url) {
   const resetEmail = {
     to: email,
