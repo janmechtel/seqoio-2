@@ -2,12 +2,21 @@ const config = require("../../config/config");
 const formatString = require("util").format;
 const nodemailer = require("nodemailer");
 const nodemailerSendgrid = require("nodemailer-sendgrid");
+const console = require("console");
 
 const transport = nodemailer.createTransport(
   nodemailerSendgrid({
     apiKey: config.sendGrid.apiKey,
   })
 );
+
+async function sendMail(emailOptions) {
+  if (!config.sendGrid.apiKey) {
+    console.log("Email would be sent (API key not set):", emailOptions);
+    return;
+  }
+  await transport.sendMail(emailOptions);
+}
 
 const texts = {
   emailFrom: "mail@mroc.de",
@@ -55,7 +64,7 @@ async function sendSignupEmail(email, url) {
     subject: texts.emailSignupSubject,
     text: formatString(texts.emailSignup, url),
   };
-  await transport.sendMail(resetEmail);
+  await sendMail(resetEmail);
 }
 
 async function sendSetPasswordEmail(email, url) {
@@ -65,7 +74,7 @@ async function sendSetPasswordEmail(email, url) {
     subject: texts.emailSetPasswordSubject,
     text: formatString(texts.emailSetPassword, url),
   };
-  await transport.sendMail(resetEmail);
+  await sendMail(resetEmail);
 }
 
 async function sendSetPasswordConfirmation(email) {
@@ -75,7 +84,7 @@ async function sendSetPasswordConfirmation(email) {
     subject: texts.emailPasswordChangedSubject,
     text: texts.emailPasswordChangedBody,
   };
-  await transport.sendMail(resetEmail);
+  await sendMail(resetEmail);
 }
 
 async function sendWelcomeEmail(email) {
@@ -85,7 +94,7 @@ async function sendWelcomeEmail(email) {
     subject: texts.emailSubject,
     text: texts.emailBody,
   };
-  await transport.sendMail(welcomeEmail);
+  await sendMail(welcomeEmail);
 }
 
 module.exports = {
