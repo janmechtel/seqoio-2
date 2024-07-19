@@ -317,8 +317,8 @@ module.exports = function (passport) {
   }
 
   if (
-    !config.authentication.microsoft.clientID ||
-    !config.authentication.microsoft.clientSecret
+    !config.authentication.google.clientID ||
+    !config.authentication.google.clientSecret
   ) {
     console.log(
       "Please provide AUTH_GOOGLE_CLIENT_ID= and AUTH_GOOGLE_CLIENT_SECRET= via .env if you want to enable Google authentication"
